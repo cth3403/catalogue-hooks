@@ -8,9 +8,6 @@ var itmLoc = [];
 
 var rowArr = [];
 
-// variables for the media of the item, exceptions, main locations
-var media, expData, mainData, tableRow;
-
 // check the length e.g. if there is content of div etc.
 function lenChk(term) {
     var lenRsp;
@@ -61,7 +58,7 @@ function trim11(str) {
 function itemInfo() {
 
     if (lenChk($('div .bibMedia')) === true) {
-        tableRow = $(' .bibItemsEntry');
+        var tableRow = $(' .bibItemsEntry');
 
         // loop through every table row under the bibItems class this will put all items in the table into an array
         for (i = 0; i < tableRow.length; i++) {
