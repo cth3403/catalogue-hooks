@@ -1,51 +1,48 @@
+'use strict';
+
 // create an array to hold the item objects
-var itemObj = new Array();
+var itemObj = [];
 
 // set the locations served
-var itmLoc = new Array();
+var itmLoc = [];
 
-var rowArr = new Array();
+var rowArr = [];
 
-// variables for the media of the item, exceptions, main locations 
+// variables for the media of the item, exceptions, main locations
 var media, expData, mainData, tableRow;
 
-// check the length e.g. if there is content of div etc. 
-function lenChk(term){
-	var lenRsp;
-	if(term.length > 0){
-		lenRsp = true;
-	}
-	else{
-		lenRsp = false;
-	}
-	return lenRsp;
+// check the length e.g. if there is content of div etc.
+function lenChk(term) {
+    var lenRsp;
+    if (term.length > 0) {
+        lenRsp = true;
+    } else {
+        lenRsp = false;
+    }
+    return lenRsp;
 }
 
 /*
  * Item Object and its properties
  * classM = classmark
- * format = based on value in leader, set to monograph or serial
  * library = owning library
- * leader = the leader 
  * status = the item's current availability
- * url = the html surrounding the owning library text
+ * classMURL = the url in the href of classmark
+ * libraryURL = the url in the href of library
  */
-function ItemObj(classM,format,library,status,classM_html,format_html,avail_html,library_html){
-	this.classM = classM;
-	this.format = format;
-	this.library = library;
-	this.status = status;
-	this.classM_html = classM_html;
-	this.format_html = format_html;
-	this.avail_html = avail_html;
-	this.library_html = library_html;
+function ItemObj(classM, library, status, classMURL, libraryURL) {
+    this.classM = classM;
+    this.library = library;
+    this.status = status;
+    this.classMURL = classMURL;
+    this.libraryURL = libraryURL;
 }
 
 /*
  * removing whitespace at beginning and end of string as trim() isn't compatible with IE prior to 9:
  * http://stackoverflow.com/questions/3000649/trim-spaces-from-start-and-end-of-string
- */ 
-function trim11 (str) {
+ */
+function trim11(str) {
     str = str.replace(/^\s+/, '');
     for (var i = str.length - 1; i >= 0; i--) {
         if (/\S/.test(str.charAt(i))) {
@@ -59,71 +56,59 @@ function trim11 (str) {
 /*
  * get information about the items - the Library, Classmark, the format (taken from the LEADER), availability, URL etc.
  * create the item objects and push them to the itemObj array
- * 
- */  
-function itemInfo(){
+ *
+ */
+function itemInfo() {
 
-	if(lenChk($('div .bibMedia')) === true){
-	tableRow = $(' .bibItemsEntry');
-	
-	// loop through every table row under the bibItems class this will put all items in the table into an array
-	for(i = 0; i < tableRow.length; i++){
-		
-		// we have a nbsp preceeding our Library location, so we need to remove this nbsp before we can use the location. 
-		library = $(tableRow[i]).children("td:nth-child(1)");
-		
-		// take the html in the row as the default location URL and text
-		library_html =  $(library).html();
-		
-		// get the library and remove unnecessary whitespace
-		library = trim11($(library).text());
+    if (lenChk($('div .bibMedia')) === true) {
+        tableRow = $(' .bibItemsEntry');
 
-		
-		format = media;
-		format_html = $(media).html();
-				
-		// get the second child (ie second cell) of the row with the class bibItemsEntry as this contains our classmark 
-		classMark_html = $(tableRow[i]).children("td:nth-child(2)").html();
-		classMark = trim11($(tableRow[i]).children("td:nth-child(2)").text());
-		 
-		// get the third child (ie third cell) of the row with the class bibItemsEntry as this contains item status
-		avail_html =  $(tableRow[i]).children("td:nth-child(3)").html();
-		avail = trim11($(tableRow[i]).children("td:nth-child(3)").text());
-		
+        // loop through every table row under the bibItems class this will put all items in the table into an array
+        for (i = 0; i < tableRow.length; i++) {
 
-		// create new objects
-			itemObj.push(new ItemObj(classMark,format,library,avail,classMark_html,format_html,avail_html,library_html));
-	}
-	
-  }
-	if(lenChk($('div .briefcitMedia')) === true){
-		  // create array structure of rowArr[titleArr[itemArr[ItemObj],itemArr[ItemObj]]]
-		  $('div .briefcitRow').each(function( index ) {		  
-		  		format = $(this).find(" .briefcitMedia").children("img").attr("alt");
-		  		item = $(this).find(' .bibItemsEntry');
-		  		var rowInd = index;
-		  		var titleArr = new Array;
-		  			for(var i = 0; i < item.length; i++){
-		  					var itemArr = new Array;
-						  	library = $(item[i]).children("td:nth-child(1)");
-						  	library_html =  $(library).html();
-		  					library = trim11($(library).text());
-		  					format = media;
-		  					format_html = $(media).html();
-		  					html = $(item[i]).html();
-		  					classMark_html = $(item[i]).children("td:nth-child(2)").html();
-		  					classMark = trim11($(item[i]).children("td:nth-child(2)").text());
-		  					avail_html =  $(item[i]).children("td:nth-child(3)").html();
-		  					avail = trim11($(item[i]).children("td:nth-child(3)").text());
-		  					titleArr.push(new ItemObj(classMark,format,library,avail,classMark_html,format_html,avail_html,library_html));   	
-		  			}
-		  		
-		  		 rowArr.push(titleArr);	
-		  });
+            // we have a nbsp preceeding our Library location, so we need to remove this nbsp before we can use the location.
+            library = $(tableRow[i]).children("td:nth-child(1)");
 
-	}
+            // take the html in the row as the default location URL and text
+            library_html = $(library).html();
+
+            // get the library and remove unnecessary whitespace
+            library = trim11($(library).text());
+
+            // get the second child (ie second cell) of the row with the class bibItemsEntry as this contains our classmark
+            classMark_html = $(tableRow[i]).children("td:nth-child(2)").html();
+            classMark = trim11($(tableRow[i]).children("td:nth-child(2)").text());
+
+            avail = trim11($(tableRow[i]).children("td:nth-child(3)").text());
+
+            // create new objects
+            itemObj.push(new ItemObj(classMark, library, avail, classMark_html, library_html));
+        }
+
+
+    }
+    if (lenChk($('div .briefcitMedia')) === true) {
+        // create array structure of rowArr[titleArr[itemArr[ItemObj],itemArr[ItemObj]]]
+        $('div .briefcitRow').each(function(index) {
+            format = $(this).find(" .briefcitMedia").children("img").attr("alt");
+            item = $(this).find(' .bibItemsEntry');
+            var rowInd = index;
+            var titleArr = new Array;
+            for (var i = 0; i < item.length; i++) {
+                var itemArr = new Array;
+                library = $(item[i]).children("td:nth-child(1)");
+                library_html = $(library).html();
+                library = trim11($(library).text());
+                html = $(item[i]).html();
+                classMark_html = $(item[i]).children("td:nth-child(2)").html();
+                classMark = trim11($(item[i]).children("td:nth-child(2)").text());
+                avail = trim11($(item[i]).children("td:nth-child(3)").text());
+                titleArr.push(new ItemObj(classMark, library, avail, classMark_html, library_html));
+            }
+
+            rowArr.push(titleArr);
+            return rowArr;
+        });
+
+    }
 }
-
-
-
-
