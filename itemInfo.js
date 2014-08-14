@@ -57,6 +57,9 @@ function trim11(str) {
  */
 function itemInfo() {
 
+    // define variables
+    var library, library_html, classMark, classMark_html, avail, html, item, i;
+
     if (lenChk($('div .bibMedia')) === true) {
         var tableRow = $(' .bibItemsEntry');
 
@@ -87,12 +90,11 @@ function itemInfo() {
     if (lenChk($('div .briefcitMedia')) === true) {
         // create array structure of rowArr[titleArr[itemArr[ItemObj],itemArr[ItemObj]]]
         $('div .briefcitRow').each(function(index) {
-            format = $(this).find(" .briefcitMedia").children("img").attr("alt");
             item = $(this).find(' .bibItemsEntry');
             var rowInd = index;
-            var titleArr = new Array;
-            for (var i = 0; i < item.length; i++) {
-                var itemArr = new Array;
+            var titleArr = [];
+            for (i = 0; i < item.length; i++) {
+                var itemArr = [];
                 library = $(item[i]).children("td:nth-child(1)");
                 library_html = $(library).html();
                 library = trim11($(library).text());
