@@ -96,10 +96,12 @@ function itemInfo() {
             for (i = 0; i < item.length; i++) {
                 var itemArr = [];
                 library = $(item[i]).children("td:nth-child(1)");
-                library_html = $(library).html();
+                library_html = $(library).find('a').attr('href');
+                //library_html = $(library_html[href]);
                 library = trim11($(library).text());
                 html = $(item[i]).html();
-                classMark_html = $(item[i]).children("td:nth-child(2)").html();
+                classMark_html = $(item[i]).children("td:nth-child(2)").find('a').attr('href');
+                //classMark_html = $(classMark_html[href]);
                 classMark = trim11($(item[i]).children("td:nth-child(2)").text());
                 avail = trim11($(item[i]).children("td:nth-child(3)").text());
                 titleArr.push(new ItemObj(classMark, library, avail, classMark_html, library_html));
