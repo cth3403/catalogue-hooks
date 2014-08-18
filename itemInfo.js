@@ -70,13 +70,13 @@ function itemInfo() {
             library = $(tableRow[i]).children("td:nth-child(1)");
 
             // take the html in the row as the default location URL and text
-            library_html = $(library).html();
+            library_html = $(library).find('a').attr('href');
 
             // get the library and remove unnecessary whitespace
             library = trim11($(library).text());
 
             // get the second child (ie second cell) of the row with the class bibItemsEntry as this contains our classmark
-            classMark_html = $(tableRow[i]).children("td:nth-child(2)").html();
+            classMark_html = $(item[i]).children("td:nth-child(2)").find('a').attr('href');
             classMark = trim11($(tableRow[i]).children("td:nth-child(2)").text());
 
             avail = trim11($(tableRow[i]).children("td:nth-child(3)").text());
