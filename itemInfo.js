@@ -111,3 +111,47 @@ function itemInfo() {
 
     }
 }
+
+// Get more information about the bib item
+
+function getMoreContent() {
+
+    var detail = $('div .bibDisplayContentMore > table.bibDetail > tbody > tr > td > table > tbody > tr');
+    var inf_array = [];
+    var desc_obj = {};
+
+    $(detail).each(function(index, tr) {
+        var item = [];
+        var lines = $('td', tr).map(function(index, td) {
+            var text = $(td).text();
+            //var arr = $.makeArray(text);
+            item.push(text);
+        });
+        inf_array.push(item);
+
+    });
+
+
+    $.each(inf_array, function(index, val) {
+        //console.log(index);
+        var parent_arr = index - 1;
+        if (val[0].length < 1) {
+            inf_array[index].splice(0, 1);
+            $.each(inf_array[index], function(index, val) {
+                inf_array[parent_arr].push(val);
+            });
+            inf_array.splice(index, 1);
+        }
+    });
+
+    $.each(inf_array, function(index, val) {
+        var objNm = val[0];
+        if (val[0].length > 1) {
+            val.splice(0, 1);
+            desc_obj[objNm] = val;
+        }
+    });
+
+    return desc_obj;
+
+}
