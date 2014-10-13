@@ -1,13 +1,5 @@
 'use strict';
 
-// create an array to hold the item objects
-var itemObj = [];
-
-// set the locations served
-var itmLoc = [];
-
-var rowArr = [];
-
 // check the length e.g. if there is content of div etc.
 function lenChk(term) {
     var lenRsp;
@@ -56,6 +48,14 @@ function trim11(str) {
  *
  */
 function itemInfo() {
+
+    // create an array to hold the item objects
+    var itemObj = [];
+
+    // set the locations served
+    var itmLoc = [];
+
+    var rowArr = [];
 
     // define variables
     var library, library_html, classMark, classMark_html, avail, html, item, i;
@@ -110,6 +110,7 @@ function itemInfo() {
         });
 
     }
+    return itemObj;
 }
 
 // Get more information about the bib item
