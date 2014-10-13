@@ -117,42 +117,55 @@ function itemInfo() {
 
 function getMoreContent() {
 
-    var detail = $('div .bibDisplayContentMore > table.bibDetail > tbody > tr > td > table > tbody > tr');
-    var inf_array = [];
-    var desc_obj = {};
+// Get the rows from the bibDisplayContentMore table (e.g Subject, ISBN etc.)
+var detail = $('div .bibDisplayContentMore > table.bibDetail > tbody > tr > td > table > tbody > tr');
+var inf_array = [];
 
-    $(detail).each(function(index, tr) {
-        var item = [];
-        var lines = $('td', tr).map(function(index, td) {
-            var text = $(td).text();
-            //var arr = $.makeArray(text);
-            item.push(text);
-        });
-        inf_array.push(item);
+// Create object to hold labels (ie properties from More Content)
+var idetail = {};
 
-    });
+for(var i=0; i < detail.length; i++){
 
+  var infoarr = $(detail[i]).children().toArray();
+  var label, data = [];
 
-    $.each(inf_array, function(index, val) {
-        //console.log(index);
-        var parent_arr = index - 1;
-        if (val[0].length < 1) {
-            inf_array[index].splice(0, 1);
-            $.each(inf_array[index], function(index, val) {
-                inf_array[parent_arr].push(val);
-            });
-            inf_array.splice(index, 1);
+  $.each(infoarr, function(key,value){
+    if($(value).hasClass('bibInfoLabel') == true){
+        label = trim11($(value).text());
+      }
+    if($(value).hasClass('bibInfoData') == true){
+      if($(value).prev().hasClass('bibInfoLabel') == true){
+          data.push(trim11($(value).text()));
         }
-    });
+        else if($(value).prev().hasClass('bibInfoLabel') == false){
 
-    $.each(inf_array, function(index, val) {
-        var objNm = val[0];
-        if (val[0].length > 1) {
-            val.splice(0, 1);
-            desc_obj[objNm] = val;
+          var prev = key-1;
+          var newD = trim11($(value).text());
+
+          if(idetail[label].length == 0){
+
+            var first = idetail[label][prev];
+            data.push(first,newD);
+
+          }
+          else{
+
+             idetail[label].push(newD);
+             data = idetail[label];
+
+          }
         }
+        else if($(value).hasClass('bibInfoData') == false && $(value).hasClass('bibInfoData') == false){
+          return true;
+        }
+      }
     });
 
-    return desc_obj;
+    idetail[label] = data;
+
+}
+inf_array.push(idetail);
+
+return inf_array;
 
 }
