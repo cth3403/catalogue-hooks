@@ -71,7 +71,7 @@ function itemInfo() {
 
         // loop through every table row under the bibItems class this will put all items in the table into an array
         for (i = 0; i < tableRow.length; i++) {
-
+            var id = i + 1;
             // we have a nbsp preceeding our Library location, so we need to remove this nbsp before we can use the location.
             library = $(tableRow[i]).children("td:nth-child(1)");
 
@@ -79,13 +79,13 @@ function itemInfo() {
             library_html = $(library).html();
 
             // set the binding ids for making changes
-            $(tableRow[i]).children("td:nth-child(1)").attr('id', 'itemInfo_'+i+'_lib');
-            $(tableRow[i]).children("td:nth-child(2)").attr('id', 'itemInfo_'+i+'_class');
-            $(tableRow[i]).children("td:nth-child(3)").attr('id', 'itemInfo_'+i+'_avail');
+            $(tableRow[i]).children("td:nth-child(1)").attr('id', 'itemInfo_'+id+'_lib');
+            $(tableRow[i]).children("td:nth-child(2)").attr('id', 'itemInfo_'+id+'_class');
+            $(tableRow[i]).children("td:nth-child(3)").attr('id', 'itemInfo_'+id+'_avail');
 
-            var library_id = 'itemInfo_'+i+'_lib';
-            var classmark_id = 'itemInfo_'+i+'_class';
-            var avail_id = 'itemInfo_'+i+'_avail';
+            var library_id = 'itemInfo_'+id+'_lib';
+            var classmark_id = 'itemInfo_'+id+'_class';
+            var avail_id = 'itemInfo_'+id+'_avail';
 
             // get the library and remove unnecessary whitespace
             library = trim11($(library).text());
@@ -110,14 +110,15 @@ function itemInfo() {
             var titleArr = [];
             for (i = 0; i < item.length; i++) {
                 var itemArr = [];
+                var id = i + 1;
                 // set the binding ids for making changes
-                $(item[i]).children("td:nth-child(1)").attr('id', 'itemInfo_'+i);
-                $(item[i]).children("td:nth-child(2)").attr('id', 'itemInfo_'+i);
-                $(item[i]).children("td:nth-child(3)").attr('id', 'itemInfo_'+i);
+                $(item[i]).children("td:nth-child(1)").attr('id', 'itemInfo_'+id);
+                $(item[i]).children("td:nth-child(2)").attr('id', 'itemInfo_'+id);
+                $(item[i]).children("td:nth-child(3)").attr('id', 'itemInfo_'+id);
 
-                var library_id = 'itemInfo_'+i+'_lib';
-                var classmark_id = 'itemInfo_'+i+'_class';
-                var avail_id = 'itemInfo_'+i+'_avail';
+                var library_id = 'itemInfo_'+id+'_lib';
+                var classmark_id = 'itemInfo_'+id+'_class';
+                var avail_id = 'itemInfo_'+id+'_avail';
 
                 library = $(item[i]).children("td:nth-child(1)");
                 library_html = $(library).find('a').attr('href');
