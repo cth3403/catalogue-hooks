@@ -18,13 +18,19 @@ function lenChk(term) {
  * status = the item's current availability
  * classMURL = the url in the href of classmark
  * libraryURL = the url in the href of library
+ *  library_id = the id to access the an item's library value
+ *  classmark_id = the id to access the an item's classmark value
+ *  avail_id = the id to access the an item's availability value
  */
-function ItemObj(classM, library, status, classMURL, libraryURL) {
+function ItemObj(classM, library, status, classMURL, libraryURL,library_id, classmark_id, avail_id) {
     this.classM = classM;
     this.library = library;
     this.status = status;
     this.classMURL = classMURL;
     this.libraryURL = libraryURL;
+    this.library_id = library_id;
+    this.classmark_id = classmark_id;
+    this.avail_id = avail_id;
 }
 
 /*
@@ -72,6 +78,15 @@ function itemInfo() {
             // take the html in the row as the default location URL and text
             library_html = $(library).html();
 
+            // set the binding ids for making changes
+            $(tableRow[i]).children("td:nth-child(1)").attr('id', 'itemInfo_'+i+'_lib');
+            $(tableRow[i]).children("td:nth-child(2)").attr('id', 'itemInfo_'+i+'_class');
+            $(tableRow[i]).children("td:nth-child(3)").attr('id', 'itemInfo_'+i+'_avail');
+
+            var library_id = 'itemInfo_'+i+'_lib';
+            var classmark_id = 'itemInfo_'+i+'_class';
+            var avail_id = 'itemInfo_'+i+'_avail';
+
             // get the library and remove unnecessary whitespace
             library = trim11($(library).text());
 
@@ -82,7 +97,7 @@ function itemInfo() {
             avail = trim11($(tableRow[i]).children("td:nth-child(3)").text());
 
             // create new objects
-            itemObj.push(new ItemObj(classMark, library, avail, classMark_html, library_html));
+            itemObj.push(new ItemObj(classMark, library, avail, classMark_html, library_html, library_id, classmark_id, avail_id ));
         }
 
 
@@ -95,6 +110,15 @@ function itemInfo() {
             var titleArr = [];
             for (i = 0; i < item.length; i++) {
                 var itemArr = [];
+                // set the binding ids for making changes
+                $(item[i]).children("td:nth-child(1)").attr('id', 'itemInfo_'+i);
+                $(item[i]).children("td:nth-child(2)").attr('id', 'itemInfo_'+i);
+                $(item[i]).children("td:nth-child(3)").attr('id', 'itemInfo_'+i);
+
+                var library_id = 'itemInfo_'+i+'_lib';
+                var classmark_id = 'itemInfo_'+i+'_class';
+                var avail_id = 'itemInfo_'+i+'_avail';
+
                 library = $(item[i]).children("td:nth-child(1)");
                 library_html = $(library).find('a').attr('href');
                 library = trim11($(library).text());
@@ -102,7 +126,7 @@ function itemInfo() {
                 classMark_html = $(item[i]).children("td:nth-child(2)").find('a').attr('href');
                 classMark = trim11($(item[i]).children("td:nth-child(2)").text());
                 avail = trim11($(item[i]).children("td:nth-child(3)").text());
-                titleArr.push(new ItemObj(classMark, library, avail, classMark_html, library_html));
+                titleArr.push(new ItemObj(classMark, library, avail, classMark_html, library_html, library_id, classmark_id, avail_id));
             }
 
             rowArr.push(titleArr);
@@ -169,3 +193,6 @@ inf_array.push(idetail);
 return inf_array;
 
 }
+
+var itemInf = itemInfo();
+var moreContent = getMoreContent();

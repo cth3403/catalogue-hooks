@@ -21,3 +21,9 @@ For use in full record you can access the elements by:
 itemObj[0].classM
 
 This will return the classmark for the first item in the display.
+
+You can make changes to individual items or group of items as an id is added to each item's library, class and availability:
+
+library id = 'itemInfo_'+ [ no. of item ] +'_lib';
+classmark id = 'itemInfo_'+ [ no. of item ] +'_class';
+availability id = 'itemInfo_'+ [ no. of item ] +'_avail';
